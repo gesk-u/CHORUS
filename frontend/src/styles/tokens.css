@@ -1,0 +1,15 @@
+/* Design tokens: palette shared by every component. */
+:root {
+  --blue: #4b63bd;
+  --blue-dark: #354b9d;
+  --red: #df4840;
+  --red-dark: #b62f34;
+  --yellow: #f4d932;
+  --paper: #fff9df;
+  --paper-2: #f7edc9;
+  --ink: #181522;
+  --pink: #ef91a7;
+  --mint: #83c89b;
+  --sky: #86b9ee;
+  --purple: #bd91d4;
+}
