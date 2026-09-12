@@ -1,0 +1,76 @@
+/* <Header /> — red theater valance with nav, search, on-air toggle. */
+.theater-header {
+  position: relative;
+  z-index: 10;
+  background:
+    repeating-linear-gradient(93deg, transparent 0 44px, rgba(107, 19, 25, .09) 45px 54px),
+    var(--red);
+  color: var(--paper);
+  padding-bottom: 27px;
+  border-top: 5px solid var(--yellow);
+}
+.theater-header::after {
+  content: '';
+  position: absolute;
+  inset: 5px 0 23px;
+  pointer-events: none;
+  opacity: .22;
+  background: repeating-linear-gradient(4deg, transparent 0 8px, #722530 9px 10px);
+}
+.header-inner {
+  max-width: 1360px;
+  height: 86px;
+  margin: auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 215px auto minmax(220px, 330px) 105px 54px;
+  align-items: center;
+  gap: 17px;
+  position: relative;
+  z-index: 2;
+}
+.valance-edge { position: absolute; left: 0; right: 0; bottom: -3px; width: 100%; height: 43px; overflow: visible; }
+.valance-edge path:last-child { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
+.header-inner nav { display: flex; justify-content: center; gap: 7px; }
+.header-inner nav button {
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  transform: rotate(-1deg);
+  box-shadow: 2px 3px 0 var(--ink);
+}
+.header-inner nav button:nth-child(2) { transform: rotate(1.5deg); }
+.header-inner nav button.active { background: var(--yellow); transform: translateY(4px) rotate(-2deg); }
+.header-inner nav b { color: var(--paper); background: var(--red); padding: 1px 5px; border-radius: 50%; font-size: 9px; }
+.search-box {
+  height: 41px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 46% 54% 48% 52% / 51% 45% 55% 49%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  transform: rotate(.5deg);
+}
+.search-box input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 12px; }
+.on-air {
+  background: #211c32;
+  color: var(--paper);
+  border: 3px solid var(--yellow);
+  padding: 8px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font: 700 11px 'Mali';
+  box-shadow: 2px 3px 0 var(--ink);
+  transform: rotate(-1deg);
+}
+.on-air i { width: 6px; height: 6px; border-radius: 50%; background: #766c84; }
+.on-air.active i { background: var(--yellow); box-shadow: 0 0 7px var(--yellow); animation: blink 1.5s infinite; }
+.avatar { border: 3px solid var(--ink); width: 47px; height: 47px; border-radius: 47% 53% 50% 45%; background: var(--sky); font: 900 22px 'Londrina Solid'; transform: rotate(4deg); }
+.avatar span { font-size: 9px; }

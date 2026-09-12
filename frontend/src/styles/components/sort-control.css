@@ -1,0 +1,4 @@
+/* <SortControl /> */
+.sort-control { display: flex; background: rgba(23,21,34,.3); padding: 5px; border: 2px solid var(--ink); gap: 3px; }
+.sort-control button { color: var(--paper); border: 0; background: transparent; padding: 7px 9px; font-size: 10px; }
+.sort-control button.active { background: var(--yellow); color: var(--ink); outline: 2px solid var(--ink); transform: rotate(-2deg); }

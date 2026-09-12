@@ -1,0 +1,11 @@
+/* <ChorusPlayer /> */
+.chorus-player { background: #24203e; color: var(--paper); --panel-color: var(--pink); overflow: hidden; }
+.chorus-player::before { background: #24203e; }
+.player-top { display: flex; justify-content: space-between; position: relative; z-index: 2; }.player-top span { font: 900 13px 'Londrina Solid'; }.player-top i { color: var(--yellow); font: 700 14px 'Gaegu'; transform: rotate(4deg); }
+.player-character { height: 90px; position: relative; display: flex; justify-content: center; }.player-character .singer { width: 87px; z-index: 2; }.player-note { position: absolute; right: 48px; color: var(--yellow); font: 700 33px 'Gaegu'; animation: float-note 2.5s infinite; }
+.chorus-player h3 { font: 900 33px/.9 'Londrina Solid'; text-align: center; margin: 5px 0 13px; }
+.waveform { height: 56px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.waveform i { width: 5px; background: var(--pink); border-radius: 50%; animation: wave .8s infinite alternate; }.waveform i:nth-child(3n) { animation-delay: .25s; background: var(--yellow); }.waveform i:nth-child(4n) { animation-delay: .45s; background: var(--sky); }
+.is-paused .waveform i { animation-play-state: paused; }
+.player-controls { border-top: 2px dashed #746b88; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; font-size: 10px; }
+.player-controls button { width: 42px; height: 42px; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); display: grid; place-items: center; }

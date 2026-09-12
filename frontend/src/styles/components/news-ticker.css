@@ -1,0 +1,8 @@
+/* <NewsTicker /> */
+.news-ticker { height: 43px; background: var(--yellow); border-block: 2px solid var(--ink); display: flex; position: relative; z-index: 6; transform: rotate(-.15deg); margin-top: -3px; }
+.ticker-label { width: 165px; flex: 0 0 165px; background: var(--ink); color: var(--paper); padding: 11px 18px; font: 700 11px 'Mali'; letter-spacing: .04em; }
+.ticker-label span { color: var(--red); margin-right: 6px; }
+.ticker-window { overflow: hidden; }
+.ticker-track { display: flex; align-items: center; width: max-content; height: 100%; animation: ticker 28s linear infinite; }
+.ticker-track span { font: 700 12px 'Mali'; margin: 0 24px; }
+.ticker-track i { font: 700 19px 'Gaegu'; }

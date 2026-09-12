@@ -1,0 +1,9 @@
+/* <StoryDrawer /> */
+.drawer-backdrop { position: fixed; inset: 0; z-index: 100; background: rgba(19,16,31,.75); backdrop-filter: blur(5px); display: flex; justify-content: flex-end; }
+.story-drawer { width: min(610px,94vw); height: 100%; background: var(--paper); border-left: 4px solid var(--ink); padding: 48px 40px 60px; overflow-y: auto; animation: drawer-in .3s ease-out; position: relative; background-image: repeating-linear-gradient(0deg,transparent 0 27px,rgba(74,99,189,.08) 28px 29px); }
+.drawer-close { position: absolute; right: 25px; top: 20px; width: 42px; height: 42px; border: 2.5px solid var(--ink); border-radius: 50%; background: var(--pink); display: grid; place-items: center; transform: rotate(5deg); }
+.story-drawer h2 { font: 900 52px/.92 'Londrina Solid'; margin: 7px 0 12px; }.drawer-deck { font-size: 13px; line-height: 1.6; max-width: 500px; }
+.drawer-choir { margin-top: 30px; }
+.voice-version { display: grid; grid-template-columns: 53px 1fr 35px; align-items: center; gap: 9px; padding: 13px 0; border-top: 2px dashed #b7aa91; }.voice-version .singer { width: 50px; }.voice-version b { font-size: 10px; }.voice-version p { font: 900 18px/1 'Londrina Solid'; margin: 3px 0; }.voice-version small { font-size: 8px; color: #6c6260; }.voice-version button { border: 2px solid var(--ink); border-radius: 50%; width: 34px; height: 34px; background: var(--yellow); display: grid; place-items: center; }
+.drawer-note { background: var(--sky); border: 2.5px solid var(--ink); padding: 14px; display: flex; gap: 10px; margin-top: 22px; transform: rotate(-1deg); }.drawer-note p { margin: 0; font-size: 10px; }.drawer-note b { display: block; font: 900 15px 'Londrina Solid'; margin-bottom: 3px; }
+.drawer-hushed { margin: 12px 0 0; color: var(--red); font: 700 16px 'Gaegu'; }

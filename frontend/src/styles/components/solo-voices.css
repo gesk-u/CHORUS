@@ -1,0 +1,10 @@
+/* <SoloVoices /> */
+.solo-section { margin-top: 65px; }
+.solo-heading { display: flex; align-items: center; color: var(--paper); margin-bottom: 20px; }
+.spotlight-doodle { font: 700 66px/.7 'Gaegu'; color: var(--yellow); margin-right: 8px; }
+.solo-heading .scribble-note { font-size: 16px; }
+.solo-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 15px; }
+.solo-card { border: 3px solid var(--ink); background: var(--solo); display: flex; align-items: center; min-width: 0; padding: 10px; text-align: left; box-shadow: 4px 5px 0 var(--ink); transform: rotate(-1deg); }
+.solo-card:nth-child(2) { transform: rotate(1.5deg); }.solo-card .singer { flex: 0 0 50px; width: 50px; }.solo-card span { display: grid; min-width: 0; }
+.solo-card small { font: 700 8px 'Mali'; text-transform: uppercase; }.solo-card b { font: 900 16px/1 'Londrina Solid'; margin: 4px 0; }.solo-card i { font: 700 12px 'Gaegu'; }
+.solo-empty { grid-column: 1/-1; margin: 0; color: var(--paper); font: 700 19px 'Gaegu'; }

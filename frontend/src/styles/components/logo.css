@@ -1,0 +1,25 @@
+/* <Logo /> */
+.logo { color: var(--ink); display: flex; align-items: center; text-decoration: none; filter: drop-shadow(1px 2px 0 rgba(255,249,223,.45)); }
+.logo > span {
+  font: 900 38px/.8 'Londrina Solid', sans-serif;
+  -webkit-text-stroke: 1.5px var(--ink);
+  color: var(--paper);
+  transform: translateY(calc((var(--i) % 2) * 3px)) rotate(calc((var(--i) - 3) * 1.7deg));
+  letter-spacing: -2px;
+}
+.logo > span:nth-child(1), .logo > span:nth-child(6) { color: var(--yellow); }
+.logo > span:nth-child(2), .logo > span:nth-child(5) { color: var(--mint); }
+.logo > span:nth-child(4) { color: var(--pink); }
+.logo-mouth {
+  width: 31px;
+  height: 39px;
+  border: 3px solid var(--ink);
+  background: var(--sky);
+  border-radius: 53% 47% 50% 45%;
+  margin: 0 2px -2px 1px;
+  position: relative;
+  transform: rotate(5deg) !important;
+}
+.logo-mouth::before, .logo-mouth::after { content: ''; position: absolute; top: 7px; width: 5px; height: 7px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 50%; }
+.logo-mouth::before { left: 5px; }.logo-mouth::after { right: 5px; }
+.logo-mouth i { position: absolute; width: 14px; height: 11px; background: var(--ink); border-radius: 50%; left: 6px; bottom: 6px; }

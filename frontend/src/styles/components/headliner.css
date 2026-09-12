@@ -1,0 +1,11 @@
+/* <Headliner /> */
+.headliner { display: grid; grid-template-columns: .82fr 1.45fr; background: var(--paper); min-height: 440px; margin-bottom: 56px; --panel-color: var(--pink); }
+.headliner-copy { padding: 41px 30px 32px; position: relative; }
+.cutout-label { display: inline-block; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); padding: 6px 10px; font: 900 15px 'Londrina Solid'; letter-spacing: .05em; transform: rotate(-2.5deg); box-shadow: 3px 3px 0 var(--ink); }
+.kicker { margin: 25px 0 9px; font: 700 10px 'Mali'; letter-spacing: .07em; }
+.headliner h2 { margin: 0; font: 900 clamp(36px,4vw,56px)/.92 'Londrina Solid'; letter-spacing: -.02em; }
+.headliner-copy > p:not(.kicker) { font-size: 13px; line-height: 1.6; margin: 17px 0; }
+.headliner-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.headliner-stats span { border: 2px solid var(--ink); padding: 5px 8px; border-radius: 50% 45% 55% 47%; font-size: 10px; background: var(--paper-2); }
+.headliner-stats b { font-size: 12px; }
+.headliner-actions { display: flex; gap: 10px; margin-top: 22px; }
