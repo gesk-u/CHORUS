@@ -1,0 +1,18 @@
+/* <VoicesCard /> */
+.voices-card { --panel-color: var(--mint); }
+.voices-card::before { border-radius: 7px 4px 9px 6px / 6px 8px 5px 7px; }
+.voices-card::after { border-radius: 6px 4px 9px 6px; }
+.voices-head { display: flex; justify-content: space-between; align-items: flex-end; }.voices-head span { font: 700 13px 'Gaegu'; color: #75686a; }
+.voices-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px 5px; margin: 13px 0 12px; }
+.voice-chip { min-width: 0; min-height: 101px; display: grid; justify-items: center; align-content: start; gap: 3px; padding: 6px 3px 7px; border: 2px dashed transparent; border-radius: 43% 52% 40% 49% / 15% 17% 18% 14%; background: transparent; transition: transform .15s, background .15s, border-color .15s; }
+.voice-chip:hover, .voice-chip:focus-visible { transform: translateY(-3px) rotate(-2deg); border-color: var(--ink); background: rgba(131,200,155,.2); outline: none; }
+.voice-chip .singer { width: 45px; max-width: 100%; }
+.voice-chip strong { max-width: 100%; font-size: 9px; line-height: 1.08; text-align: center; overflow-wrap: anywhere; }
+.voice-chip small { font: 700 12px/1 'Gaegu'; color: #6c6260; }
+.voice-chip.is-muted { background: rgba(223,72,64,.07); }
+.voice-chip.is-muted strong { color: #8a817d; text-decoration: line-through wavy var(--red); }
+.voice-chip.is-muted small { padding: 2px 6px; border-radius: 99px; background: var(--red); color: var(--paper); }
+.voices-summary { border-top: 2px dashed #b7aa91; padding-top: 10px; font-size: 10px; line-height: 1.45; color: #5f5654; }
+.voices-summary p { margin: 0 0 4px; }
+.voices-summary b { color: var(--red); }
+.voices-summary button { margin-top: 5px; border: 2px solid var(--ink); background: var(--mint); padding: 5px 9px; font-size: 9px; font-weight: 700; box-shadow: 2px 2px 0 var(--ink); }

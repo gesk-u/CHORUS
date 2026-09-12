@@ -1,0 +1,17 @@
+/* Shared buttons. */
+.primary-button, .tune-button, .empty-paper button {
+  border: 2.5px solid var(--ink);
+  background: var(--yellow);
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 12px;
+  box-shadow: 3px 4px 0 var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transform: rotate(-.5deg);
+}
+.primary-button:hover, .tune-button:hover { transform: translate(2px,2px) rotate(.5deg); box-shadow: 1px 2px 0 var(--ink); }
+.round-button { width: 44px; border: 2.5px solid var(--ink); border-radius: 50% 47% 55% 45%; background: var(--paper); display: grid; place-items: center; }
+.round-button.saved { background: var(--pink); }

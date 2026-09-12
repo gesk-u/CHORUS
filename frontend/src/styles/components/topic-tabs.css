@@ -1,0 +1,6 @@
+/* <TopicTabs /> */
+.topic-tabs { display: flex; gap: 8px; margin-bottom: 50px; padding: 2px 3px 8px; overflow-x: auto; }
+.topic-tabs button { flex: 1 0 auto; min-width: 110px; border: 2.5px solid var(--ink); background: var(--paper); padding: 12px 13px; font-size: 12px; font-weight: 700; box-shadow: 3px 4px 0 var(--ink); transform: rotate(-1deg); }
+.topic-tabs button:nth-child(even) { transform: rotate(1deg); }.topic-tabs button:nth-child(3n) { transform: rotate(-2deg); }
+.topic-tabs button i { font: 700 21px 'Gaegu'; margin-right: 7px; }
+.topic-tabs button.active { background: var(--tab-color); transform: translateY(-6px) rotate(2deg); }

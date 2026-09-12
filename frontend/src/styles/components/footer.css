@@ -1,0 +1,7 @@
+/* <Footer /> */
+.stage-footer { height: 250px; background: #252038; position: relative; color: var(--paper); border-top: 4px solid var(--ink); overflow: hidden; }
+.footer-copy { position: relative; z-index: 3; text-align: center; padding-top: 38px; }.footer-copy .logo { justify-content: center; transform: scale(.85); }.footer-copy p { font: 700 20px 'Gaegu'; color: var(--yellow); margin: 10px 0 2px; }.footer-copy > span { font-size: 9px; }
+.footer-audience { position: absolute; left: -20px; right: -20px; bottom: -36px; display: flex; justify-content: space-between; }
+.footer-audience i { flex: 0 0 75px; height: 100px; margin: 0 -12px; background: #11101a; }.footer-audience i:nth-child(3n) { height: 120px; }.footer-audience i:nth-child(4n) { width: 90px; }
+.footer-conductor { position: absolute; z-index: 2; left: 50%; bottom: 15px; width: 70px; height: 105px; transform: translateX(-50%); }
+.footer-conductor span { position: absolute; left: 23px; top: 0; width: 30px; height: 30px; background: #07070d; border-radius: 50%; }.footer-conductor b { position: absolute; left: 17px; top: 27px; width: 42px; height: 78px; background: #07070d; clip-path: polygon(25% 0,75% 0,100% 100%,0 100%); }.footer-conductor i { position: absolute; left: 22px; top: 39px; width: 4px; height: 66px; background: #07070d; transform-origin: top; transform: rotate(124deg); }.footer-conductor i:last-child { left: 53px; transform: rotate(-128deg); height: 75px; }

@@ -1,0 +1,10 @@
+/* <ConductorCard /> (the h3 rule is shared with the other rail cards). */
+.conductor-card { --panel-color: var(--sky); }
+.maestro { height: 130px; margin: -18px -7px 0; }.maestro svg { height: 145px; margin: auto; overflow: visible; }.maestro path, .maestro circle { stroke: var(--ink); stroke-width: 2.7; stroke-linecap: round; stroke-linejoin: round; }
+.maestro-arm { fill: none; animation: maestro 1s infinite alternate; transform-origin: 85px 92px; }
+.conductor-card h3, .voices-card h3, .crescendo h3 { font: 900 25px/1 'Londrina Solid'; margin: 9px 0 6px; }
+.conductor-card > p, .voices-card > p { font-size: 10px; line-height: 1.5; color: #6c6260; }
+.taste-row { display: grid; grid-template-columns: 1fr auto; font-size: 9px; font-weight: 700; margin: 12px 0; }
+.taste-row > div { grid-column: 1/-1; height: 7px; background: var(--paper-2); border: 1px solid var(--ink); margin-top: 4px; transform: rotate(-.5deg); }
+.taste-row > div i { display: block; height: 100%; border-right: 1px solid var(--ink); }
+.tune-button { width: 100%; margin-top: 17px; background: var(--sky); }

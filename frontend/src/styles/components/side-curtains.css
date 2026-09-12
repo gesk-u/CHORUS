@@ -1,0 +1,6 @@
+/* <SideCurtains /> — only visible on very wide screens. */
+.side-curtain { display: none; position: fixed; z-index: 4; top: 86px; bottom: 0; width: 67px; background: var(--red); border: 3px solid var(--ink); pointer-events: none; }
+.side-curtain::before { content: ''; position: absolute; top: 47%; left: -4px; right: -4px; height: 38px; background: var(--yellow); border: 3px solid var(--ink); transform: skewY(-6deg); }
+.side-curtain span { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--red-dark); border-radius: 50%; }
+.side-curtain span:nth-child(1) { left: 15px; transform: rotate(1.8deg); }.side-curtain span:nth-child(2) { left: 34px; transform: rotate(-1deg); }.side-curtain span:nth-child(3) { left: 51px; transform: rotate(1.2deg); }
+.side-curtain--left { left: -8px; border-radius: 0 18px 12px 0; }.side-curtain--right { right: -8px; border-radius: 18px 0 0 12px; }

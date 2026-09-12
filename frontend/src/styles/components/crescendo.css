@@ -1,0 +1,4 @@
+/* <Crescendo /> */
+.crescendo { --panel-color: var(--purple); }
+.trend { display: grid; grid-template-columns: 24px 1fr; border-top: 2px dashed #b7aa91; padding: 11px 0 5px; position: relative; }
+.trend > b { font: 700 9px 'Mali'; }.trend > span { font-size: 10px; font-weight: 700; }.trend small { display: block; color: var(--red); font-size: 8px; margin-top: 2px; }.trend > i { grid-column: 2; height: 5px; background: var(--red); margin-top: 7px; clip-path: polygon(0 50%,100% 0,100% 100%); }

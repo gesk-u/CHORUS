@@ -1,0 +1,7 @@
+/* <Singer /> — the outlet characters. */
+.singer { width: 64px; overflow: visible; filter: url(#wobble); }
+.singer path, .singer circle, .singer ellipse { stroke: var(--ink); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.singer .sing-mouth { animation: sing .55s steps(2,end) infinite alternate; transform-origin: 33px 46px; }
+.singer--small { width: 41px; }
+.singer--muted { opacity: .48; filter: grayscale(.65); }
+.singer .mute-tape { stroke: var(--red); stroke-width: 5; }

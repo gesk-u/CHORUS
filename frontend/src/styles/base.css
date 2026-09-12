@@ -1,0 +1,33 @@
+/* Element defaults and the app shell background. */
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--blue);
+    font-family: 'Mali', cursive;
+  }
+  button, input { font: inherit; }
+  button { color: inherit; }
+  svg { display: block; }
+}
+
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+.chorus-app {
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--blue);
+  background-image:
+    radial-gradient(circle at 15% 11%, rgba(144, 174, 255, .27), transparent 20%),
+    radial-gradient(circle at 84% 34%, rgba(28, 35, 115, .26), transparent 23%),
+    repeating-linear-gradient(83deg, transparent 0 12px, rgba(21, 28, 90, .035) 12px 14px),
+    url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23dae0ff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' opacity='.17'%3E%3Cpath d='M24 23q15 9 29-2M35 10v33M91 33q12-18 24 0t24 0M176 17c13 0 13 19 0 19s-13-19 0-19Zm8 19v22'/%3E%3Cpath d='m29 118 8 7 9-11 7 11 12-7M95 103c18 0 26 17 12 27-14 9-30-4-21-18 7-11 23-8 23 4'/%3E%3Cpath d='M178 108c15-13 34 8 19 21-14 12-31-7-19-21Zm-1 10-17 18M42 189c15-15 31 5 16 19-15 12-32-7-16-19ZM111 182l5 13 14 1-11 9 4 14-12-8-12 8 4-14-11-9 14-1 5-13ZM186 189q11-14 22 0M197 176v26'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, auto, 240px 240px;
+}
+.svg-filters { position: absolute; }
+.doodle-icon { flex: 0 0 auto; }
+
