@@ -1,1 +1,36 @@
+/*
+ * Global stylesheet. Import ORDER matters: later files override earlier ones,
+ * exactly like the original single-file design. Add new component styles in
+ * src/styles/components/ and import them here before animations/responsive.
+ */
 @import 'tailwindcss';
+
+@import '../styles/tokens.css';
+@import '../styles/base.css';
+@import '../styles/layout.css';
+
+@import '../styles/components/logo.css';
+@import '../styles/components/header.css';
+@import '../styles/components/news-ticker.css';
+@import '../styles/components/side-curtains.css';
+@import '../styles/components/hello-row.css';
+@import '../styles/components/paper.css';
+@import '../styles/components/headliner.css';
+@import '../styles/components/buttons.css';
+@import '../styles/components/singer.css';
+@import '../styles/components/choir-stage.css';
+@import '../styles/components/topic-tabs.css';
+@import '../styles/components/setlist.css';
+@import '../styles/components/sort-control.css';
+@import '../styles/components/story-card.css';
+@import '../styles/components/empty-setlist.css';
+@import '../styles/components/solo-voices.css';
+@import '../styles/components/chorus-player.css';
+@import '../styles/components/conductor-card.css';
+@import '../styles/components/voices-card.css';
+@import '../styles/components/crescendo.css';
+@import '../styles/components/footer.css';
+@import '../styles/components/story-drawer.css';
+
+@import '../styles/animations.css';
+@import '../styles/responsive.css';
