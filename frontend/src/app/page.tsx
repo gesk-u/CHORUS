@@ -1,3 +1,6 @@
+import { ChorusApp } from "@/components/ChorusApp"
+
+/** Home page. */
 export default function HomePage() {
-  return <main>CHORUS</main>
+  return <ChorusApp />
 }
