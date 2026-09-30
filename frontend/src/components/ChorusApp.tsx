@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { StoryDrawer } from "@/components/drawer/StoryDrawer"
 import { Headliner } from "@/components/home/Headliner"
 import { HelloRow } from "@/components/home/HelloRow"
 import { Footer } from "@/components/layout/Footer"
@@ -10,20 +11,21 @@ import { SideCurtains } from "@/components/layout/SideCurtains"
 import { SvgFilters } from "@/components/ui/SvgFilters"
 import { initiallyMuted } from "@/data/voices"
 import { useToggleList } from "@/hooks/useToggleList"
-import type { Feed } from "@/types/news"
+import type { Feed, Story } from "@/types/news"
 
 type Props = {
   feed: Feed
 }
 
 /**
- * Owns the page's interactive state and passes it down.
- * Every visual piece lives in its own file.
+ * Owns the page's interactive state (saved stories, muted outlets, open
+ * drawer) and passes it down. Every visual piece lives in its own file.
  */
 export function ChorusApp({ feed }: Props) {
   const { stories } = feed
   const [query, setQuery] = useState("")
   const [live, setLive] = useState(true)
+  const [selected, setSelected] = useState<Story | null>(null)
   const saved = useToggleList<number>()
   const muted = useToggleList<number>(initiallyMuted)
 
@@ -51,14 +53,16 @@ export function ChorusApp({ feed }: Props) {
             muted={muted.items}
             saved={saved.items.includes(headliner.id)}
             onSave={() => saved.toggle(headliner.id)}
-            onOpen={() => {
-              // TODO: open the story drawer
-            }}
+            onOpen={() => setSelected(headliner)}
           />
         )}
       </main>
 
       <Footer />
+
+      {selected && (
+        <StoryDrawer story={selected} muted={muted.items} onClose={() => setSelected(null)} />
+      )}
     </div>
   )
 }
