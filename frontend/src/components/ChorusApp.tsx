@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer"
 import { Header } from "@/components/layout/Header"
 import { NewsTicker } from "@/components/layout/NewsTicker"
 import { SideCurtains } from "@/components/layout/SideCurtains"
+import { RightRail } from "@/components/sidebar/RightRail"
 import { SvgFilters } from "@/components/ui/SvgFilters"
 import { initiallyMuted } from "@/data/voices"
 import { useToggleList } from "@/hooks/useToggleList"
@@ -100,6 +101,13 @@ export function ChorusApp({ feed }: Props) {
             />
             <SoloVoices solos={visibleSolos} />
           </section>
+
+          <RightRail
+            stories={stories}
+            muted={muted.items}
+            onToggleMuted={muted.toggle}
+            onUnmuteAll={muted.clear}
+          />
         </div>
       </main>
 
