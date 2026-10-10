@@ -1,0 +1,38 @@
+[project]
+name = "chorus-backend"
+version = "0.1.0"
+description = "CHORUS API: ingests tech news, groups duplicate stories by embeddings, ranks them per reader."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic-settings>=2.6",
+    "sqlalchemy[asyncio]>=2.0.36",
+    "asyncpg>=0.30",
+    "alembic>=1.14",
+    "pgvector>=0.3.6",
+    "numpy>=2.1",
+    "scikit-learn>=1.5",
+    "feedparser>=6.0",
+    "httpx>=0.28",
+    "apscheduler>=3.10,<4",
+]
+
+[project.optional-dependencies]
+# Embedding model (pulls in PyTorch, ~2 GB). Needed by the ingest worker, not by the API.
+ml = ["sentence-transformers>=3.3"]
+
+[dependency-groups]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.24", "ruff>=0.8"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
