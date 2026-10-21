@@ -12,20 +12,24 @@ from app.schemas.common import StoryArtKind, StoryTopic
 DEFAULT_TOPIC: StoryTopic = "Startups"
 
 _KEYWORDS: dict[StoryTopic, tuple[str, ...]] = {
-    "AI": ("ai", "artificial intelligence", "llm", "language model", "openai", "anthropic",
-           "gpt", "neural", "machine learning", "chatbot", "open model", "open-weight"),
+    "AI": ("ai", "artificial intelligence", "llm", "llms", "language model", "openai",
+           "anthropic", "gpt", "neural", "machine learning", "chatbot", "chatbots",
+           "open model", "open models", "open-weight"),
     "Climate": ("climate", "energy", "carbon", "solar", "battery", "batteries", "grid",
-                "emission", "renewable", "electric vehicle", "data center"),
-    "Security": ("security", "hack", "breach", "password", "passkey", "malware", "ransomware",
-                 "vulnerab", "privacy", "encryption", "spyware"),
-    "Science": ("space", "satellite", "nasa", "physics", "quantum", "research", "scientist",
-                "rocket", "biology", "telescope"),
-    "Startups": ("startup", "funding", "raises", "series a", "series b", "venture", "ipo",
-                 "founder", "acquir", "valuation"),
+                "emission", "emissions", "renewable", "renewables", "electric vehicle",
+                "data center", "data centers"),
+    "Security": ("security", "hack", "hacked", "hackers", "breach", "breaches", "password",
+                 "passwords", "passkey", "passkeys", "malware", "ransomware", "vulnerability",
+                 "vulnerabilities", "privacy", "encryption", "spyware"),
+    "Science": ("space", "satellite", "satellites", "nasa", "physics", "quantum", "research",
+                "scientist", "scientists", "rocket", "biology", "telescope"),
+    "Startups": ("startup", "startups", "funding", "raises", "series a", "series b", "venture",
+                 "ipo", "founder", "acquires", "acquisition", "valuation"),
 }
 
+# Whole-word matches only, so "ai" doesn't match "aid" or "air".
 _PATTERNS = {
-    topic: [re.compile(r"\b" + re.escape(word)) for word in words]
+    topic: [re.compile(r"\b" + re.escape(word) + r"\b") for word in words]
     for topic, words in _KEYWORDS.items()
 }
 
