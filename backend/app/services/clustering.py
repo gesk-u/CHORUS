@@ -17,7 +17,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.models import Article, Story
-from app.models.base import utcnow
 from app.services.embeddings import article_text
 from app.services.topics import classify_topic
 from app.services.vectors import add_to_centroid
@@ -26,7 +25,8 @@ from app.services.vectors import add_to_centroid
 async def assign_to_story(session: AsyncSession, article: Article) -> Story:
     """Attaches `article` (which must have an embedding) to a new or existing Story."""
     settings = get_settings()
-    since = utcnow() - timedelta(hours=settings.cluster_window_hours)
+    # Only match stories active around the time this article was published.
+    since = article.published_at - timedelta(hours=settings.cluster_window_hours)
     distance = Story.centroid.cosine_distance(article.embedding)
 
     row = (
@@ -42,7 +42,9 @@ async def assign_to_story(session: AsyncSession, article: Article) -> Story:
         story = row.Story
         story.centroid = add_to_centroid(story.centroid, story.article_count, article.embedding)
         story.article_count += 1
-        story.updated_at = utcnow()
+        # Track the newest *published* article, not fetch time, so old news doesn't look fresh.
+        story.updated_at = max(story.updated_at, article.published_at)
+        story.first_seen_at = min(story.first_seen_at, article.published_at)
     else:
         story = Story(
             title=article.title,
@@ -51,7 +53,7 @@ async def assign_to_story(session: AsyncSession, article: Article) -> Story:
             centroid=article.embedding,
             article_count=1,
             first_seen_at=article.published_at,
-            updated_at=utcnow(),
+            updated_at=article.published_at,
         )
         session.add(story)
 

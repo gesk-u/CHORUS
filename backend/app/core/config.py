@@ -13,7 +13,9 @@ class Settings(BaseSettings):
 
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     # An article joins the nearest recent story if its cosine distance is at most this.
-    cluster_distance_threshold: float = 0.25
+    # 0.35 measured on real headlines with all-MiniLM-L6-v2: same-event pairs mostly fall
+    # below it, unrelated-but-similar topics start just above it.
+    cluster_distance_threshold: float = 0.35
     cluster_window_hours: int = 48
 
     feed_window_hours: int = 48

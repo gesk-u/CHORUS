@@ -17,4 +17,4 @@ export const voices: Voice[] = [
 ]
 
 /** Outlets hushed when the page first loads. */
-export const initiallyMuted: number[] = [9]
+export const initiallyMuted: number[] = []
