@@ -44,11 +44,11 @@ export function ChorusApp({ feed }: Props) {
         `${story.title} ${story.deck}`.toLowerCase().includes(q) &&
         voiceCount(story, muted.items) > 0,
     )
-    return result.sort((a, b) => {
-      if (sort === "Loudest") return voiceCount(b, muted.items) - voiceCount(a, muted.items)
-      if (sort === "Freshest") return a.time - b.time
-      return a.id - b.id
-    })
+    // "For me" keeps the order the backend's recommender returned.
+    if (sort === "Loudest")
+      return result.sort((a, b) => voiceCount(b, muted.items) - voiceCount(a, muted.items))
+    if (sort === "Freshest") return result.sort((a, b) => a.time - b.time)
+    return result
   }, [stories, topic, query, sort, muted.items])
 
   const headliner = stories[0]
