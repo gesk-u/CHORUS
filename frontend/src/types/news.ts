@@ -12,6 +12,18 @@ export type Voice = {
 
 export type StoryArtKind = "robot" | "battery" | "key" | "satellite" | "phone"
 
+/** One outlet's take on a story: its own headline and link. */
+export type StoryVersion = {
+  /** Index into `voices`, or null for an outlet that isn't drawn on stage. */
+  outlet: number | null
+  outletName: string
+  title: string
+  url: string
+  minutesAgo: number
+  /** 0-100: how close this article is to the story's centre. */
+  inTune: number
+}
+
 /** A cluster of articles from several outlets that cover the same event. */
 export type Story = {
   id: number
@@ -28,6 +40,10 @@ export type Story = {
   reason: string
   color: string
   art: StoryArtKind
+  /** Average of the versions' inTune. */
+  inTune: number
+  /** One entry per outlet, ordered by who published first. */
+  versions: StoryVersion[]
 }
 
 /** A story only one outlet covered. */
@@ -35,6 +51,7 @@ export type SoloStory = {
   outlet: number
   title: string
   color: string
+  url?: string
 }
 
 export type TopicTab = {
@@ -49,9 +66,6 @@ export type StoryPhoto = {
   credit: string
   focus: string
 }
-
-/** [outlet name, that outlet's headline] for the stage speech bubble. */
-export type StageVoice = [name: string, headline: string]
 
 export type TasteScore = { label: string; value: number; color: string }
 export type Trend = { label: string; change: string }
