@@ -1,6 +1,7 @@
 import { ChoirStage } from "@/components/choir-stage/ChoirStage"
 import { DoodleIcon } from "@/components/ui/DoodleIcon"
 import { voiceCount } from "@/lib/story"
+import { formatAgo } from "@/lib/time"
 import type { Story } from "@/types/news"
 
 type Props = {
@@ -20,7 +21,7 @@ export function Headliner({ story, muted, saved, onSave, onOpen }: Props) {
       <div className="headliner-copy">
         <span className="cutout-label">TODAY’S HEADLINER!</span>
         <p className="kicker">
-          {voices} OUTLETS • {story.time} MIN AGO • {story.topic}
+          {voices} OUTLETS • {formatAgo(story.time).toUpperCase()} • {story.topic}
         </p>
         <h2>{story.title}</h2>
         <p>
@@ -32,7 +33,7 @@ export function Headliner({ story, muted, saved, onSave, onOpen }: Props) {
             <b>{voices}</b> voices
           </span>
           <span>
-            <b>93%</b> in tune
+            <b>{story.inTune}%</b> in tune
           </span>
           <span>
             <b>6 min</b> read
@@ -51,7 +52,7 @@ export function Headliner({ story, muted, saved, onSave, onOpen }: Props) {
           </button>
         </div>
       </div>
-      <ChoirStage onOpen={onOpen} muted={muted} voiceTotal={voices} />
+      <ChoirStage story={story} onOpen={onOpen} muted={muted} voiceTotal={voices} />
     </section>
   )
 }
