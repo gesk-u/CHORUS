@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from app.services.clustering import cluster_embeddings
-from app.services.feed import minutes_since, outlet_lineup
+from app.services.feed import ArticleRow, build_versions, minutes_since
 from app.services.ingest import clean_html, parse_feed
 from app.services.recommender import explain, score_story, update_profile
 from app.services.topics import classify_topic
@@ -62,14 +62,29 @@ def test_cluster_embeddings_single_row():
 
 # feed ----------------------------------------------------------------------
 
-def test_outlet_lineup_orders_by_first_publisher_and_counts_offstage():
+def _row(outlet_id, position, minutes, title, embedding):
+    return ArticleRow(
+        outlet_id=outlet_id, position=position, outlet_name=f"Outlet {outlet_id}",
+        title=title, url=f"https://x/{title}", published_at=T0 + timedelta(minutes=minutes),
+        embedding=embedding,
+    )
+
+
+def test_build_versions_one_per_outlet_in_publish_order():
+    centroid = [1, 0]
     rows = [
-        (10, 3, T0 + timedelta(minutes=5)),
-        (11, 0, T0),
-        (10, 3, T0 + timedelta(minutes=9)),  # same outlet twice counts once
-        (12, None, T0 + timedelta(minutes=1)),  # not on stage
+        _row(10, 3, 5, "a-first", [0.6, 0.8]),
+        _row(11, 0, 0, "b", [1, 0]),
+        _row(10, 3, 9, "a-closest", [0.99, 0.1]),  # same outlet again, more on-topic
+        _row(12, None, 1, "c", [0.8, 0.6]),  # outlet not on stage
     ]
-    assert outlet_lineup(rows) == ([0, 3], 1)
+    versions = build_versions(rows, centroid, now=T0 + timedelta(minutes=30))
+
+    assert [v.outlet for v in versions] == [0, None, 3]  # 11 published first, then 12, then 10
+    assert versions[2].title == "a-closest"  # outlet 10's most on-topic article
+    assert versions[2].minutes_ago == 21
+    assert versions[0].in_tune == 100
+    assert versions[1].in_tune == 80
 
 
 def test_minutes_since_never_negative():

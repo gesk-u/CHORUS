@@ -1,42 +1,47 @@
 import { Singer } from "@/components/ui/Singer"
-import { SCENE_HEIGHT, SCENE_WIDTH, stagePositions, stageVoices } from "@/data/stage"
+import { SCENE_HEIGHT, SCENE_WIDTH, stageSlots } from "@/data/stage"
+import type { StageSinger } from "./ChoirStage"
 
 const SINGER_WIDTH = 56
 const SINGER_HEIGHT = (SINGER_WIDTH * 78) / 64
 
 type Props = {
   inert: boolean
+  singers: StageSinger[]
   muted: number[]
-  activeVoice: number
-  onSelectVoice: (index: number) => void
+  activeIndex: number
+  onSelect: (index: number) => void
 }
 
 /** Benches, the singers standing on them, and the conductor in front. */
-export function StageScene({ inert, muted, activeVoice, onSelectVoice }: Props) {
+export function StageScene({ inert, singers, muted, activeIndex, onSelect }: Props) {
   return (
     <div className="stage-scene" inert={inert}>
       <Benches />
       <div className="choir-people">
-        {stagePositions.map(([x, feet, index]) => {
-          const name = stageVoices[index][0]
-          const isMuted = muted.includes(index)
+        {singers.map((singer, i) => {
+          const [x, feet] = stageSlots[i]
+          const isMuted = muted.includes(singer.outlet)
+          const isActive = i === activeIndex
           return (
             <button
-              key={index}
-              className={`choir-person ${activeVoice === index ? "is-active" : ""}`}
+              key={singer.outlet}
+              className={`choir-person ${isActive ? "is-active" : ""}`}
               style={{
                 left: `${(x / SCENE_WIDTH) * 100}%`,
                 top: `${((feet - SINGER_HEIGHT) / SCENE_HEIGHT) * 100}%`,
                 width: `${(SINGER_WIDTH / SCENE_WIDTH) * 100}%`,
                 zIndex: feet,
               }}
-              onClick={() => onSelectVoice(index)}
-              onMouseEnter={() => onSelectVoice(index)}
-              aria-label={isMuted ? `${name} is hushed` : `Hear ${name}'s version`}
-              aria-pressed={activeVoice === index}
+              onClick={() => onSelect(i)}
+              onMouseEnter={() => onSelect(i)}
+              aria-label={
+                isMuted ? `${singer.outletName} is hushed` : `Hear ${singer.outletName}'s version`
+              }
+              aria-pressed={isActive}
             >
-              <Singer index={index} muted={isMuted} />
-              <span>{name}</span>
+              <Singer index={singer.outlet} muted={isMuted} />
+              <span>{singer.outletName}</span>
             </button>
           )
         })}

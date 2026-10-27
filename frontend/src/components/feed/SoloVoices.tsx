@@ -20,20 +20,36 @@ export function SoloVoices({ solos }: Props) {
       </div>
       <div className="solo-cards">
         {solos.length ? (
-          solos.map((solo) => (
-            <button
-              key={solo.outlet}
-              className="solo-card"
-              style={{ "--solo": solo.color } as CSSProperties}
-            >
-              <Singer index={solo.outlet} />
-              <span>
-                <small>{voices[solo.outlet].name} sings alone</small>
-                <b>{solo.title}</b>
-                <i>read the solo →</i>
-              </span>
-            </button>
-          ))
+          solos.map((solo) => {
+            const style = { "--solo": solo.color } as CSSProperties
+            const content = (
+              <>
+                <Singer index={solo.outlet} />
+                <span>
+                  <small>{voices[solo.outlet].name} sings alone</small>
+                  <b>{solo.title}</b>
+                  <i>read the solo →</i>
+                </span>
+              </>
+            )
+            // Real articles open in a new tab; mock data has no URL.
+            return solo.url ? (
+              <a
+                key={solo.url}
+                className="solo-card"
+                style={style}
+                href={solo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {content}
+              </a>
+            ) : (
+              <button key={solo.title} className="solo-card" style={style}>
+                {content}
+              </button>
+            )
+          })
         ) : (
           <p className="solo-empty">Today’s solo voices are all hushed.</p>
         )}

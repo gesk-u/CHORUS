@@ -1,7 +1,9 @@
 """Builds the home feed: ranked multi-outlet stories plus single-outlet "solos"."""
 
 from collections.abc import Iterable
+from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import Any
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,33 +12,72 @@ from sqlalchemy.orm import selectinload
 from app.core.config import get_settings
 from app.models import Article, Interaction, Reader, Story
 from app.models.base import utcnow
-from app.schemas.feed import FeedOut, SoloStoryOut, StoryOut
+from app.schemas.feed import FeedOut, SoloStoryOut, StoryOut, VersionOut
 from app.services.recommender import as_array, explain, score_story
 from app.services.topics import topic_style
+from app.services.vectors import cosine_similarity
 
 MAX_STORIES = 30
 MAX_SOLOS = 6
 
 
-def outlet_lineup(articles: Iterable[tuple[int, int | None, datetime]]) -> tuple[list[int], int]:
-    """From (outlet_id, outlet_position, published_at) rows, returns
-    (stage positions ordered by who published first, count of off-stage outlets)."""
-    positions: list[int] = []
-    seen: set[int] = set()
-    extra = 0
-    for outlet_id, position, _ in sorted(articles, key=lambda a: a[2]):
-        if outlet_id in seen:
-            continue
-        seen.add(outlet_id)
-        if position is None:
-            extra += 1
-        else:
-            positions.append(position)
-    return positions, extra
+@dataclass(frozen=True)
+class ArticleRow:
+    """The parts of an Article (and its Outlet) the feed needs."""
+
+    outlet_id: int
+    position: int | None
+    outlet_name: str
+    title: str
+    url: str
+    published_at: datetime
+    embedding: Any
+
+    @classmethod
+    def from_article(cls, a: Article) -> "ArticleRow":
+        return cls(
+            a.outlet_id, a.outlet.position, a.outlet.name, a.title, a.url,
+            a.published_at, a.embedding,
+        )
 
 
 def minutes_since(moment: datetime, now: datetime) -> int:
     return max(0, int((now - moment).total_seconds() // 60))
+
+
+def in_tune(embedding: Any, centroid: Any) -> int:
+    """0-100: how close an article sits to its story's centre."""
+    if embedding is None or centroid is None:
+        return 0
+    return round(100 * max(0.0, cosine_similarity(embedding, centroid)))
+
+
+def build_versions(rows: Iterable[ArticleRow], centroid: Any, now: datetime) -> list[VersionOut]:
+    """One version per outlet, ordered by who published first.
+
+    When an outlet wrote several articles about the story, its version is the
+    one closest to the story's centre (its most on-topic piece).
+    """
+    by_outlet: dict[int, list[ArticleRow]] = {}
+    for row in rows:
+        by_outlet.setdefault(row.outlet_id, []).append(row)
+
+    picked: list[tuple[datetime, VersionOut]] = []
+    for articles in by_outlet.values():
+        best = max(articles, key=lambda r: in_tune(r.embedding, centroid))
+        first_published = min(r.published_at for r in articles)
+        version = VersionOut(
+            outlet=best.position,
+            outlet_name=best.outlet_name,
+            title=best.title,
+            url=best.url,
+            minutes_ago=minutes_since(best.published_at, now),
+            in_tune=in_tune(best.embedding, centroid),
+        )
+        picked.append((first_published, version))
+
+    picked.sort(key=lambda item: item[0])
+    return [version for _, version in picked]
 
 
 async def _topic_reads(session: AsyncSession, reader_id: int) -> dict[str, int]:
@@ -73,15 +114,18 @@ async def build_feed(session: AsyncSession, reader_id: int | None = None) -> Fee
     solos: list[tuple[datetime, SoloStoryOut]] = []
 
     for story in stories:
-        positions, extra = outlet_lineup(
-            (a.outlet_id, a.outlet.position, a.published_at) for a in story.articles
+        versions = build_versions(
+            (ArticleRow.from_article(a) for a in story.articles), story.centroid, now
         )
-        voices = len(positions) + extra
+        positions = [v.outlet for v in versions if v.outlet is not None]
+        extra = len(versions) - len(positions)
+        voices = len(versions)
         color, art = topic_style(story.topic)
 
         if voices < 2:
             if positions:
-                solo = SoloStoryOut(outlet=positions[0], title=story.title, color=color)
+                v = versions[0]
+                solo = SoloStoryOut(outlet=positions[0], title=v.title, color=color, url=v.url)
                 solos.append((story.first_seen_at, solo))
             continue
 
@@ -95,12 +139,14 @@ async def build_feed(session: AsyncSession, reader_id: int | None = None) -> Fee
                     topic=story.topic,  # type: ignore[arg-type]
                     time=age,
                     outlets=positions,
-                    extra_voices=extra or None,
+                    extra_voices=extra,
                     title=story.title,
                     deck=story.deck or "",
                     reason=explain(story.topic, topic_reads, relevance, voices),
                     color=color,
                     art=art,
+                    in_tune=round(sum(v.in_tune for v in versions) / voices),
+                    versions=versions,
                 ),
             )
         )

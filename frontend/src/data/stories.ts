@@ -1,7 +1,14 @@
-import type { SoloStory, Story } from "@/types/news"
+import type { SoloStory, Story, StoryVersion } from "@/types/news"
+import { voices } from "./voices"
 
-/** Mock feed. Replaced by backend data via src/lib/api.ts. */
-export const stories: Story[] = [
+/**
+ * Mock feed, used when NEXT_PUBLIC_API_URL is not set. It has the same shape
+ * as the backend's /feed response, so the UI works the same either way.
+ */
+
+type MockStory = Omit<Story, "versions" | "inTune">
+
+const mockStories: MockStory[] = [
   {
     id: 1,
     topic: "AI",
@@ -60,19 +67,42 @@ export const stories: Story[] = [
   },
 ]
 
+/** Placeholder per-outlet headlines (from the Figma design), by outlet index. */
+const mockHeadlines: string[] = [
+  "Open releases narrow the performance gap again",
+  "The gap is closing much faster than expected",
+  "Small models are having a very big week",
+  "Open AI puts new pressure on premium pricing",
+  "Local models just became far more practical",
+  "Running capable AI locally gets much easier",
+  "Benchmarks show a fast-changing field",
+  "A new release resets startup expectations",
+  "Cheaper models could widen global access",
+  "Investors rethink the closed-model advantage",
+  "The race shifts from scale to distribution",
+  "Efficiency gains matter more than model size",
+]
+
+const mockVersions = (story: MockStory): StoryVersion[] =>
+  story.outlets.map((outlet, i) => ({
+    outlet,
+    outletName: voices[outlet].name,
+    title: i === 0 ? story.title : mockHeadlines[outlet],
+    url: "#",
+    minutesAgo: story.time + i * 3,
+    inTune: 94 - i * 2,
+  }))
+
+export const stories: Story[] = mockStories.map((story) => {
+  const versions = mockVersions(story)
+  const inTune = Math.round(versions.reduce((sum, v) => sum + v.inTune, 0) / versions.length)
+  return { ...story, versions, inTune }
+})
+
 export const soloStories: SoloStory[] = [
   { outlet: 5, title: "The tiny repair shop keeping a whole town online", color: "#f4d932" },
   { outlet: 8, title: "Inside the phone market that runs entirely on trust", color: "#ef91a7" },
   { outlet: 4, title: "A 20-year-old console gets one last, lovely fix", color: "#86b9ee" },
-]
-
-/** Placeholder alternative headlines shown in the story drawer. */
-export const alternateHeadlines: string[] = [
-  "Why smaller systems suddenly look much more capable",
-  "The open-source gap narrows again",
-  "New releases put pressure on closed-model pricing",
-  "A very good week for local AI",
-  "Benchmarks are only half the story",
 ]
 
 export const tickerHeadlines: string[] = [
