@@ -3,6 +3,7 @@ import { DoodleIcon } from "@/components/ui/DoodleIcon"
 import { Singer } from "@/components/ui/Singer"
 import { voices } from "@/data/voices"
 import { activeOutlets, voiceCount } from "@/lib/story"
+import { formatAgo } from "@/lib/time"
 import type { Story } from "@/types/news"
 import { LoudnessMeter } from "./LoudnessMeter"
 import { StoryArt } from "./StoryArt"
@@ -48,7 +49,7 @@ export function StoryCard({ story, index, muted, saved, onSave, onOpen }: Props)
           <span>
             {story.topic} • via {leadName}
           </span>
-          <span>{story.time} min ago</span>
+          <span>{formatAgo(story.time)}</span>
         </div>
         <h3>{story.title}</h3>
         <p>{story.deck}</p>

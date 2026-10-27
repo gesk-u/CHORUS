@@ -1,11 +1,8 @@
 import { DoodleIcon } from "@/components/ui/DoodleIcon"
-import { alternateHeadlines } from "@/data/stories"
-import { voices } from "@/data/voices"
-import { activeOutlets, voiceCount } from "@/lib/story"
+import { voiceCount } from "@/lib/story"
+import { formatAgo } from "@/lib/time"
 import type { Story } from "@/types/news"
 import { VoiceVersion } from "./VoiceVersion"
-
-const MAX_VERSIONS = 6
 
 type Props = {
   story: Story
@@ -15,8 +12,9 @@ type Props = {
 
 /** Side panel comparing how each outlet covered the same story. */
 export function StoryDrawer({ story, muted, onClose }: Props) {
-  const singing = activeOutlets(story, muted).slice(0, MAX_VERSIONS)
-  const hushed = story.outlets.filter((outlet) => muted.includes(outlet))
+  const isHushed = (outlet: number | null) => outlet !== null && muted.includes(outlet)
+  const singing = story.versions.filter((v) => !isHushed(v.outlet))
+  const hushed = story.versions.filter((v) => isHushed(v.outlet))
 
   return (
     <div className="drawer-backdrop" onMouseDown={onClose}>
@@ -32,24 +30,19 @@ export function StoryDrawer({ story, muted, onClose }: Props) {
         </button>
         <span className="cutout-label">{story.topic} CHOIR</span>
         <p className="kicker">
-          {voiceCount(story, muted)} OUTLETS • {story.time} MIN AGO
+          {voiceCount(story, muted)} OUTLETS • {formatAgo(story.time).toUpperCase()} •{" "}
+          {story.inTune}% IN TUNE
         </p>
         <h2 id="drawer-title">{story.title}</h2>
         <p className="drawer-deck">{story.deck}</p>
         <div className="drawer-choir">
-          {singing.map((outlet, i) => (
-            <VoiceVersion
-              key={outlet}
-              outlet={outlet}
-              headline={i === 0 ? story.title : alternateHeadlines[i - 1]}
-              minutesAgo={i * 3 + 2}
-              inTune={94 - i * 2}
-            />
+          {singing.map((version) => (
+            <VoiceVersion key={`${version.outletName}-${version.url}`} version={version} />
           ))}
         </div>
         {hushed.length > 0 && (
           <p className="drawer-hushed">
-            Hushed by you: {hushed.map((outlet) => voices[outlet].name).join(", ")}
+            Hushed by you: {hushed.map((v) => v.outletName).join(", ")}
           </p>
         )}
         <div className="drawer-note">

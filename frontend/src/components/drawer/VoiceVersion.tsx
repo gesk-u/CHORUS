@@ -1,30 +1,28 @@
 import { DoodleIcon } from "@/components/ui/DoodleIcon"
 import { Singer } from "@/components/ui/Singer"
-import { voices } from "@/data/voices"
+import { formatAgo } from "@/lib/time"
+import type { StoryVersion } from "@/types/news"
 
 type Props = {
-  outlet: number
-  headline: string
-  minutesAgo: number
-  /** How closely this version matches the cluster, in percent. */
-  inTune: number
+  version: StoryVersion
 }
 
-/** One outlet's version of a story inside the drawer. */
-export function VoiceVersion({ outlet, headline, minutesAgo, inTune }: Props) {
+/** One outlet's version of a story inside the drawer, linking to the article. */
+export function VoiceVersion({ version }: Props) {
+  const { outlet, outletName, title, url, minutesAgo, inTune } = version
   return (
     <div className="voice-version">
-      <Singer index={outlet} small />
+      {outlet !== null ? <Singer index={outlet} small /> : <span aria-hidden="true" />}
       <div>
-        <b>{voices[outlet].name}</b>
-        <p>{headline}</p>
+        <b>{outletName}</b>
+        <p>{title}</p>
         <small>
-          {minutesAgo} min ago · {inTune}% in tune
+          {formatAgo(minutesAgo)} · {inTune}% in tune
         </small>
       </div>
-      <button aria-label={`Read ${voices[outlet].name}'s article`}>
+      <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`Read on ${outletName}`}>
         <DoodleIcon name="arrow" />
-      </button>
+      </a>
     </div>
   )
 }
