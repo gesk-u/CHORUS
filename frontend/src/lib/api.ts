@@ -10,7 +10,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL
 export async function getFeed(): Promise<Feed> {
   if (!API_URL) return { stories, soloStories }
 
-  const res = await fetch(`${API_URL}/feed`, { next: { revalidate: 60 } })
+  // Always fetch fresh: it's a live feed, and a cached copy can outlive an API change.
+  const res = await fetch(`${API_URL}/feed`, { cache: "no-store" })
   if (!res.ok) throw new Error(`Feed request failed: ${res.status}`)
   return res.json()
 }
