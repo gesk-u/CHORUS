@@ -26,6 +26,7 @@ async def main(once: bool) -> None:
         minutes=get_settings().ingest_interval_minutes,
         next_run_time=datetime.now(),
         max_instances=1,
+        coalesce=True,  # if runs were missed (e.g. laptop asleep), run once, not N times
     )
     scheduler.start()
     await asyncio.Event().wait()
