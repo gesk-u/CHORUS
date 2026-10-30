@@ -2,9 +2,19 @@
 
 from app.models.article import Article
 from app.models.base import EMBEDDING_DIM, Base
+from app.models.ingest_run import IngestRun
 from app.models.interaction import Interaction
 from app.models.outlet import Outlet
 from app.models.reader import Reader
 from app.models.story import Story
 
-__all__ = ["EMBEDDING_DIM", "Article", "Base", "Interaction", "Outlet", "Reader", "Story"]
+__all__ = [
+    "EMBEDDING_DIM",
+    "Article",
+    "Base",
+    "IngestRun",
+    "Interaction",
+    "Outlet",
+    "Reader",
+    "Story",
+]
