@@ -20,10 +20,20 @@ dependencies = [
 
 [project.optional-dependencies]
 # Embedding model (pulls in PyTorch, ~2 GB). Needed by the ingest worker, not by the API.
-ml = ["sentence-transformers>=3.3"]
+ml = ["sentence-transformers>=3.3", "torch>=2.5"]  # torch listed so the CPU source below applies
 
 [dependency-groups]
 dev = ["pytest>=8.3", "pytest-asyncio>=0.24", "ruff>=0.8"]
+
+# In Docker (Linux), use CPU-only PyTorch: ~700 MB instead of ~2.5 GB of CUDA libraries.
+# Other platforms keep the default wheels.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -1,3 +1,13 @@
+# docker compose up -d             -> database + migrations + API + news worker
+# docker compose up -d db worker   -> when you run the API yourself with `uvicorn --reload`
+
+x-backend: &backend
+  build: .
+  image: chorus-backend
+  environment:
+    DATABASE_URL: postgresql+asyncpg://chorus:chorus@db:5432/chorus
+    CORS_ORIGINS: '["http://localhost:3000"]'
+
 services:
   db:
     image: pgvector/pgvector:pg17
@@ -13,6 +23,36 @@ services:
       test: ["CMD-SHELL", "pg_isready -U chorus"]
       interval: 5s
       retries: 10
+    restart: unless-stopped
+
+  # Runs once: brings the schema up to date and seeds outlets (both are safe to repeat).
+  migrate:
+    <<: *backend
+    command: sh -c "alembic upgrade head && python -m app.seed"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # Fetches every INGEST_INTERVAL_MINUTES. A database lock keeps it to one fetch at a time.
+  worker:
+    <<: *backend
+    command: python -m app.worker
+    volumes:
+      - models:/models  # embedding model is downloaded once and kept here
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
 
 volumes:
   pgdata:
+  models:
