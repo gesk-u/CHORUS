@@ -35,10 +35,12 @@ def test_feed_uses_frontend_field_names(monkeypatch):
             )
         ],
         solo_stories=[SoloStoryOut(outlet=5, title="solo", color="#f4d932", url="https://x/2")],
+        version="42",
     )
     body = _client(monkeypatch, feed).get("/feed").json()
 
-    assert set(body) == {"stories", "soloStories"}
+    assert set(body) == {"stories", "soloStories", "version"}
+    assert body["version"] == "42"
     assert set(body["stories"][0]) == {
         "id", "topic", "time", "outlets", "extraVoices",
         "title", "deck", "reason", "color", "art", "inTune", "versions",
@@ -59,7 +61,8 @@ def test_offstage_outlet_is_sent_as_null(monkeypatch):
         id=3, topic="AI", time=1, outlets=[], extra_voices=1, title="t", deck="d",
         reason="r", color="#f4d932", art="robot", in_tune=80, versions=[offstage],
     )
-    body = _client(monkeypatch, FeedOut(stories=[story], solo_stories=[])).get("/feed").json()
+    feed = FeedOut(stories=[story], solo_stories=[], version="1")
+    body = _client(monkeypatch, feed).get("/feed").json()
     assert body["stories"][0]["versions"][0]["outlet"] is None
 
 
@@ -68,8 +71,18 @@ def test_feed_defaults_extra_voices_to_zero(monkeypatch):
         id=2, topic="Climate", time=10, outlets=[1, 3], title="t", deck="d",
         reason="r", color="#83c89b", art="battery", in_tune=88, versions=[VERSION],
     )
-    body = _client(monkeypatch, FeedOut(stories=[story], solo_stories=[])).get("/feed").json()
+    feed = FeedOut(stories=[story], solo_stories=[], version="1")
+    body = _client(monkeypatch, feed).get("/feed").json()
     assert body["stories"][0]["extraVoices"] == 0
+
+
+def test_feed_version_endpoint(monkeypatch):
+    async def fake_version(session):
+        return "7"
+
+    monkeypatch.setattr(feed_service, "feed_version", fake_version)
+    app.dependency_overrides[get_session] = _no_session
+    assert TestClient(app).get("/feed/version").json() == {"version": "7"}
 
 
 def test_health():

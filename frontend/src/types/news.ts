@@ -74,4 +74,6 @@ export type Trend = { label: string; change: string }
 export type Feed = {
   stories: Story[]
   soloStories: SoloStory[]
+  /** Changes when new articles arrive; compared against GET /feed/version. */
+  version: string
 }
