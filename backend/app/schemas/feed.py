@@ -43,3 +43,9 @@ class FeedOut(CamelModel):
 
     stories: list[StoryOut]
     solo_stories: list[SoloStoryOut]
+    # Changes whenever new articles arrive. Compare with GET /feed/version.
+    version: str
+
+
+class FeedVersionOut(CamelModel):
+    version: str

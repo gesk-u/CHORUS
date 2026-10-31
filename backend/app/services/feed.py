@@ -80,6 +80,11 @@ def build_versions(rows: Iterable[ArticleRow], centroid: Any, now: datetime) -> 
     return [version for _, version in picked]
 
 
+async def feed_version(session: AsyncSession) -> str:
+    """Newest article id. New articles are the only thing that changes the feed's content."""
+    return str(await session.scalar(select(func.max(Article.id))) or 0)
+
+
 async def _topic_reads(session: AsyncSession, reader_id: int) -> dict[str, int]:
     since = utcnow() - timedelta(days=7)
     rows = await session.execute(
@@ -156,4 +161,5 @@ async def build_feed(session: AsyncSession, reader_id: int | None = None) -> Fee
     return FeedOut(
         stories=[story for _, story in ranked[:MAX_STORIES]],
         solo_stories=[solo for _, solo in solos[:MAX_SOLOS]],
+        version=await feed_version(session),
     )
