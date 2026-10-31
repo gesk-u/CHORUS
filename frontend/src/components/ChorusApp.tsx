@@ -14,6 +14,7 @@ import { SideCurtains } from "@/components/layout/SideCurtains"
 import { RightRail } from "@/components/sidebar/RightRail"
 import { SvgFilters } from "@/components/ui/SvgFilters"
 import { initiallyMuted } from "@/data/voices"
+import { useLiveFeed } from "@/hooks/useLiveFeed"
 import { useToggleList } from "@/hooks/useToggleList"
 import { voiceCount } from "@/lib/story"
 import type { Feed, Sort, Story, Topic } from "@/types/news"
@@ -35,6 +36,8 @@ export function ChorusApp({ feed }: Props) {
   const [selected, setSelected] = useState<Story | null>(null)
   const saved = useToggleList<number>()
   const muted = useToggleList<number>(initiallyMuted)
+  // ON AIR = new stories appear on their own; PAUSED = the page holds still.
+  useLiveFeed(feed.version, live)
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase()
