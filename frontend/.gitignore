@@ -10,3 +10,8 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Cloudflare (OpenNext build output, local wrangler state and secrets)
+/.open-next/
+/.wrangler/
+.dev.vars*

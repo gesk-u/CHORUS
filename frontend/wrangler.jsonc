@@ -1,0 +1,20 @@
+// Cloudflare Workers config for the frontend (built with @opennextjs/cloudflare).
+// Deploy: npm run deploy (NEXT_PUBLIC_API_URL must be set at build time).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chorus",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    // Lets the worker call itself (used by OpenNext for caching).
+    { "binding": "WORKER_SELF_REFERENCE", "service": "chorus" }
+  ],
+  // Cloudflare creates the DNS record and certificate for this domain on deploy.
+  "routes": [{ "pattern": "chorus.anastasiia.dev", "custom_domain": true }],
+  "observability": { "enabled": true }
+}
