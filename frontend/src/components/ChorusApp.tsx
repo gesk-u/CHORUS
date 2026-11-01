@@ -76,7 +76,7 @@ export function ChorusApp({ feed }: Props) {
       <SideCurtains />
 
       <main className="page">
-        <HelloRow name="Ana" voicesHeard={148} storiesTuned={31} echoesHushed={117} freshStories={12} />
+        <HelloRow voicesHeard={148} storiesTuned={31} echoesHushed={117} freshStories={12} />
 
         {headliner && (
           <Headliner

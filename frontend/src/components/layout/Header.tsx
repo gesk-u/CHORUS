@@ -35,9 +35,6 @@ export function Header({ savedCount, query, onQueryChange, live, onToggleLive }:
           <span>{live ? "ON AIR" : "PAUSED"}</span>
           <i />
         </button>
-        <button className="avatar">
-          A<span>na</span>
-        </button>
       </div>
       <svg
         className="valance-edge"

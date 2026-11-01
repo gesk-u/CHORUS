@@ -1,5 +1,4 @@
 type Props = {
-  name: string
   voicesHeard: number
   storiesTuned: number
   echoesHushed: number
@@ -7,12 +6,12 @@ type Props = {
 }
 
 /** Greeting with today's numbers. */
-export function HelloRow({ name, voicesHeard, storiesTuned, echoesHushed, freshStories }: Props) {
+export function HelloRow({ voicesHeard, storiesTuned, echoesHushed, freshStories }: Props) {
   return (
     <section className="hello-row">
       <div>
         <p className="scribble-note">Tuesday’s show is already loud!</p>
-        <h1>Good morning, {name}.</h1>
+        <h1>Good morning.</h1>
         <p className="intro">
           We heard <b>{voicesHeard} voices</b> and tuned them into <b>{storiesTuned} stories.</b>
         </p>

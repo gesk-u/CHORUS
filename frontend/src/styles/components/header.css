@@ -23,7 +23,7 @@
   margin: auto;
   padding: 0 32px;
   display: grid;
-  grid-template-columns: 215px auto minmax(220px, 330px) 105px 54px;
+  grid-template-columns: 215px auto minmax(220px, 330px) 105px;
   align-items: center;
   gap: 17px;
   position: relative;
@@ -72,5 +72,3 @@
 }
 .on-air i { width: 6px; height: 6px; border-radius: 50%; background: #766c84; }
 .on-air.active i { background: var(--yellow); box-shadow: 0 0 7px var(--yellow); animation: blink 1.5s infinite; }
-.avatar { border: 3px solid var(--ink); width: 47px; height: 47px; border-radius: 47% 53% 50% 45%; background: var(--sky); font: 900 22px 'Londrina Solid'; transform: rotate(4deg); }
-.avatar span { font-size: 9px; }
