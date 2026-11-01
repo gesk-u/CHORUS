@@ -5,8 +5,10 @@ const notes = ["♪", "♫", "♪"]
 
 /** Scrolling "NOW SINGING" headline strip. */
 export function NewsTicker() {
-  // The track is rendered twice so the CSS loop (translateX -50%) is seamless.
-  const loop = [...tickerHeadlines, ...tickerHeadlines.slice(0, 2)]
+  // One "half" repeats the headlines enough to be wider than any screen; the
+  // track holds two identical halves so the translateX(-50%) loop is seamless.
+  const half = Array.from({ length: 4 }, () => tickerHeadlines).flat()
+  const loop = [...half, ...half]
   return (
     <div className="news-ticker">
       <div className="ticker-label">
