@@ -56,6 +56,10 @@ npm run dev
 
 Open http://localhost:3000. API docs are at http://localhost:8000/docs.
 
+## Deployment
+
+Runs for free on Cloudflare Workers (frontend), Render (API), Neon (database) and a scheduled GitHub Actions job (news worker).
+
 ## Tests
 
 ```bash
