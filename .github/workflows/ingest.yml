@@ -1,0 +1,53 @@
+name: Ingest
+
+# Production news worker. Every 30 minutes GitHub starts a fresh machine that
+# updates the database schema, fetches the outlet RSS feeds once, saves new
+# articles to Neon and exits. Nothing runs between runs, so it costs nothing.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *" # UTC; GitHub may start runs a few minutes late
+  workflow_dispatch: # "Run workflow" button in the Actions tab
+
+# Never run two ingests at once (the app also takes a database lock).
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    name: Fetch news
+    # Forks have no DATABASE_URL secret, so don't run the schedule there.
+    if: github.repository == 'gesk-u/CHORUS'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      HF_HOME: ${{ github.workspace }}/.models
+    steps:
+      - uses: actions/checkout@v4
+
+      # Caches downloaded packages (incl. CPU PyTorch) between runs.
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+
+      # Caches the embedding model (~90 MB) so it isn't downloaded every run.
+      - uses: actions/cache@v4
+        with:
+          path: .models
+          key: hf-all-MiniLM-L6-v2
+
+      - run: uv sync --locked --no-dev --extra ml
+
+      # Both are safe to repeat: no-ops when the schema and outlets are up to date.
+      - name: Migrate and seed
+        run: uv run --no-sync alembic upgrade head && uv run --no-sync python -m app.seed
+
+      - name: Ingest once
+        run: uv run --no-sync python -m app.worker --once

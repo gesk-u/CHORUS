@@ -10,10 +10,18 @@ ENV UV_COMPILE_BYTECODE=1 \
     HF_HOME=/models \
     PYTHONUNBUFFERED=1
 
+# INSTALL_ML=0 skips PyTorch (~700 MB) for an API-only image, e.g. on Render's free plan.
+# The API never loads the embedding model; only the ingest worker does.
+ARG INSTALL_ML=1
+
 # Dependencies first, so code changes don't re-download PyTorch.
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev --extra ml
+    if [ "$INSTALL_ML" = "1" ]; then \
+        uv sync --frozen --no-dev --extra ml; \
+    else \
+        uv sync --frozen --no-dev; \
+    fi
 
 COPY . .
 

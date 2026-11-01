@@ -1,0 +1,26 @@
+# Render Blueprint: the FastAPI backend on Render's free plan.
+# Render dashboard -> New -> Blueprint -> pick this repo.
+#
+# Only the API runs here. The database is on Neon, and the ingest worker plus the
+# database migrations run on GitHub Actions (.github/workflows/ingest.yml).
+services:
+  - type: web
+    name: chorus-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      # Neon connection string, asyncpg form: postgresql+asyncpg://...?ssl=require
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        value: '["https://chorus.anastasiia.dev"]'
+      # Build arg for the Dockerfile: API-only image without PyTorch.
+      - key: INSTALL_ML
+        value: "0"
