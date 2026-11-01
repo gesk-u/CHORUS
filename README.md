@@ -2,6 +2,8 @@
 
 **A tech-news reader that groups the same story from many outlets into one card, and learns what you like to read.**
 
+**Live:** https://chorus.anastasiia.dev
+
 When a big story breaks, many sites publish their own version of it. CHORUS pulls those articles in, works out which ones are about the same event, and shows them as one story. The feed is ranked by your reading habits, and each card explains why it was picked for you.
 
 ## Tech stack
