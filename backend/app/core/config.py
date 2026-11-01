@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     cluster_distance_threshold: float = 0.35
     cluster_window_hours: int = 48
 
-    feed_window_hours: int = 48
+    # How far back the home feed looks. Ranking still favours fresh stories.
+    feed_window_hours: int = 168  # 1 week
     ingest_interval_minutes: int = 10
 
 
