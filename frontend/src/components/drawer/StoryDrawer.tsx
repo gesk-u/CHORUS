@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { DoodleIcon } from "@/components/ui/DoodleIcon"
 import { voiceCount } from "@/lib/story"
 import { formatAgo } from "@/lib/time"
@@ -12,6 +13,15 @@ type Props = {
 
 /** Side panel comparing how each outlet covered the same story. */
 export function StoryDrawer({ story, muted, onClose }: Props) {
+  // A modal dialog should close with Escape, like the close button and backdrop.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose()
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [onClose])
+
   const isHushed = (outlet: number | null) => outlet !== null && muted.includes(outlet)
   const singing = story.versions.filter((v) => !isHushed(v.outlet))
   const hushed = story.versions.filter((v) => isHushed(v.outlet))
