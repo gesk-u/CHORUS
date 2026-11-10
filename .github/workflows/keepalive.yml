@@ -1,0 +1,20 @@
+name: Keep API awake
+
+# The free Render instance sleeps after ~15 minutes without traffic, and the
+# site errors while it wakes. Ping it every 10 minutes so it stays up.
+# (GitHub can start scheduled runs late, hence 10 rather than 14.)
+
+on:
+  schedule:
+    - cron: "*/10 * * * *" # UTC
+  workflow_dispatch: # "Run workflow" button in the Actions tab
+
+jobs:
+  ping:
+    name: Ping /health
+    if: github.repository == 'gesk-u/CHORUS'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping API
+        run: curl -fsS --retry 5 --retry-delay 10 --retry-all-errors --max-time 90 https://chorus-api.anastasiia.dev/health

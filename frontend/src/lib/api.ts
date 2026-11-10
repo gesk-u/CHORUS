@@ -11,10 +11,25 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL
 export async function getFeed(): Promise<Feed> {
   if (!API_URL) return { stories, soloStories, version: "mock" }
 
-  // Always fetch fresh: it's a live feed, and a cached copy can outlive an API change.
-  const res = await fetch(`${API_URL}/feed`, { cache: "no-store" })
-  if (!res.ok) throw new Error(`Feed request failed: ${res.status}`)
-  return res.json()
+  // The free Render backend sleeps when idle and takes up to a minute to wake,
+  // answering with errors meanwhile. Keep retrying for a while before giving up.
+  const deadline = Date.now() + 60_000
+  let lastError: unknown
+  while (Date.now() < deadline) {
+    try {
+      // Always fetch fresh: it's a live feed, and a cached copy can outlive an API change.
+      const res = await fetch(`${API_URL}/feed`, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(30_000),
+      })
+      if (res.ok) return res.json()
+      lastError = new Error(`Feed request failed: ${res.status}`)
+    } catch (err) {
+      lastError = err
+    }
+    await new Promise((resolve) => setTimeout(resolve, 3_000))
+  }
+  throw lastError
 }
 
 /** The backend's current feed version, or null if it can't be reached. */
